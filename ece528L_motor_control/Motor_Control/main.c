@@ -80,7 +80,12 @@ void SysTick_Handler(void)
  */
 void Bumper_Switches_Handler(uint8_t bumper_switch_state)
 {
-    printf("Collision Detected! Bumper Switch State: 0x%02X\n", bumper_switch_state);
+    if (collision_detected == 0)
+    {
+        printf("Collision Detected! Bumper Switch State: 0x%02X\n", bumper_switch_state);
+        collision_detected = 1;
+    }
+
 }
 
 /**
@@ -149,41 +154,42 @@ void Drive_Pattern_1()
 void Handle_Collision()
 {
     // Stop the motors
-
+    Motor_Stop();
 
     // Make a function call to Clock_Delay1ms(2000)
-
+    Clock_Delay1ms(2000);
 
     // Move the motors backward with 30% duty cycle
-
+    Motor_Backward(4500, 4500);
 
     // Make a function call to Clock_Delay1ms(2000)
-
+    Clock_Delay1ms(2000);
 
     // Stop the motors
-
+    Motor_Stop();
 
     // Make a function call to Clock_Delay1ms(1000)
-
+    Clock_Delay1ms(1000);
 
     // Make the robot turn to the right with 10% duty cycle
-
+    Motor_Right(1500, 1500);
 
     // Make a function call to Clock_Delay1ms(4000)
-
+    Clock_Delay1ms(4000);
 
     // Stop the motors
-
+    Motor_Stop();
 
     // Make a function call to Clock_Delay1ms(2000)
-
+    Clock_Delay1ms(2000);
 
     // Set the collision_detected flag to 0
-
+    collision_detected = 0;
 }
 
 int main(void)
 {
+    // printf("Starting Program...");
     // Initialize the 48 MHz Clock
     Clock_Init48MHz();
 
@@ -232,13 +238,13 @@ int main(void)
 
 //        Drive_Pattern_1();
 
-//        if (collision_detected == 1)
-//        {
-//            Handle_Collision();
-//        }
-//        else
-//        {
-//            Motor_Forward(4500, 4500);
-//        }
+        if (collision_detected == 1)
+        {
+            Handle_Collision();
+        }
+        else
+        {
+            Motor_Forward(4500, 4500);
+        }
     }
 }
