@@ -145,7 +145,8 @@ void Drive_Pattern_1()
 }
 
 /**
- * @brief
+ * @brief A user defined function that causes the robot to back up, turn to the right, and move forward when
+ * the bumper switches detect a collision.
  *
  * @param None
  *
